@@ -1,0 +1,45 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-image: url('https://i.ibb.co/FqmCZHV2/IMG-20250402-WA0051.jpg');
+  background-size: cover;
+  background-position: center;
+  color: #00f5ff;
+}
+
+.login-container,
+.admin-panel {
+  background: rgba(0, 0, 0, 0.7);
+  margin: 100px auto;
+  padding: 30px;
+  border-radius: 15px;
+  width: 90%;
+  max-width: 500px;
+  text-align: center;
+  box-shadow: 0 0 25px #00f5ff;
+}
+
+input {
+  padding: 10px;
+  width: 80%;
+  margin: 10px 0;
+  border: none;
+  border-radius: 5px;
+}
+
+button {
+  background: #00f5ff;
+  border: none;
+  padding: 10px 20px;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 10px;
+  border-radius: 5px;
+  box-shadow: 0 0 15px #00f5ff;
+  transition: 0.3s ease;
+}
+
+button:hover {
+  background: #02e0e0;
+}
