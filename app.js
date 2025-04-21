@@ -1,68 +1,37 @@
-const ADMIN_USERNAME = "anjana";
-const ADMIN_PASSWORD = "anjana970";
-
-// Dummy data - replace with real DB fetch in backend
-let users = [
-  { username: "user1", accessKey: "abc123" },
-  { username: "user2", accessKey: "def456" }
-];
-
-let currentAccessKey = "initial-key";
-
-function login() {
-  const username = document.getElementById("username").value;
-  const password = document.getElementById("password").value;
-
-  if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
-    document.getElementById("login-section").style.display = "none";
-    document.getElementById("admin-section").style.display = "block";
-  } else {
-    alert("වැරදි Login විස්තර!");
-  }
+// Fetch current Access Key from API and display it
+function fetchCurrentKey() {
+  fetch("http://localhost:3000/api/access-key")
+    .then(response => response.json())
+    .then(data => {
+      document.getElementById("current-key").innerText = `Current Access Key: ${data.key}`;
+    })
+    .catch(err => console.log("Error fetching key", err));
 }
 
-function showUsers() {
-  const container = document.getElementById("panel-content");
-  container.innerHTML = `<h3>Users Using Access Key</h3>
-    <ul>
-      ${users.map(u => `<li>${u.username} - <strong>${u.accessKey}</strong></li>`).join("")}
-    </ul>`;
-}
-
-function showSendUpdate() {
-  const container = document.getElementById("panel-content");
-  container.innerHTML = `
-    <h3>Send Update</h3>
-    <textarea id="update-message" placeholder="Update message here..." rows="5" style="width: 90%;"></textarea>
-    <br>
-    <button onclick="sendUpdate()">Send Update</button>
-  `;
-}
-
-function sendUpdate() {
-  const msg = document.getElementById("update-message").value;
-  alert("Update Sent: " + msg);
-  // You can trigger backend or DB update here to notify all users
-}
-
-function showKeyChanger() {
-  const container = document.getElementById("panel-content");
-  container.innerHTML = `
-    <h3>Change Access Key</h3>
-    <input type="text" id="new-key" placeholder="Enter new Access Key">
-    <br>
-    <button onclick="changeKey()">Change Key</button>
-    <p>Current Key: <strong>${currentAccessKey}</strong></p>
-  `;
-}
-
+// Update the Access Key using API
 function changeKey() {
   const newKey = document.getElementById("new-key").value;
   if (newKey.trim()) {
-    currentAccessKey = newKey;
-    alert("Access Key Changed to: " + newKey);
-    showKeyChanger(); // Refresh
+    fetch("http://localhost:3000/api/access-key", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ newKey }),
+    })
+      .then(response => response.json())
+      .then(data => {
+        alert("Access Key Updated!");
+        fetchCurrentKey();  // Refresh current key
+      })
+      .catch(err => {
+        alert("Failed to update key!");
+        console.log("Error:", err);
+      });
   } else {
-    alert("ඇතුළත් කරලා තියෙන්න ඕනෙ key එකක්");
+    alert("Please enter a valid key.");
   }
 }
+
+// Initialize fetch
+fetchCurrentKey();
